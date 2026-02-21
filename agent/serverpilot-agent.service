@@ -1,0 +1,45 @@
+[Unit]
+Description=ServerPilot Agent
+Documentation=https://github.com/Amirhossein-Asadzadeh/serverpilot
+After=network-online.target
+Wants=network-online.target
+# Disable restart rate limiting so the agent always recovers after a reboot,
+# even if it restarts several times while the network is initialising.
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+User=serverpilot
+Group=serverpilot
+WorkingDirectory=/opt/serverpilot-agent
+
+# Token and port are read from /etc/serverpilot/agent.conf by agent.py at startup.
+ExecStart=/opt/serverpilot-agent/venv/bin/python /opt/serverpilot-agent/agent.py
+Restart=always
+RestartSec=5
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=serverpilot-agent
+
+# ── Security hardening ──────────────────────────────────────────────────────
+# The agent runs as an unprivileged system user with a minimal filesystem view.
+
+# Cannot gain new privileges (e.g. via setuid binaries)
+NoNewPrivileges=true
+
+# Mount /usr, /boot, and /etc read-only.
+# Agent reads token from /etc/serverpilot/agent.conf — reads work on read-only mounts.
+ProtectSystem=strict
+
+# Hide /home, /root, and /run/user from the service
+ProtectHome=true
+
+# Give the service a private /tmp, isolated from the host
+PrivateTmp=true
+
+# Paths the agent needs read/write access to at runtime
+ReadWritePaths=/opt/serverpilot-agent /var/log/serverpilot-agent.log
+
+[Install]
+WantedBy=multi-user.target
