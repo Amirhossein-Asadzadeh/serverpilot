@@ -1,0 +1,185 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Global base styles ────────────────────────────────────────────────────── */
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: #0a0e1a;
+    color: #e2e8f0;
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #0a0e1a;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #1e2d45;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #00d4ff44;
+  }
+}
+
+/* ─── Component utilities ───────────────────────────────────────────────────── */
+
+@layer components {
+  /* Glass card */
+  .glass-card {
+    @apply bg-bg-card border border-border rounded-xl backdrop-blur-sm;
+    background: rgba(17, 24, 39, 0.8);
+  }
+
+  /* Glow border on hover */
+  .glow-border {
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .glow-border:hover {
+    border-color: #00d4ff55;
+    box-shadow: 0 0 15px #00d4ff22;
+  }
+
+  /* Cyan accent button */
+  .btn-primary {
+    @apply px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200;
+    background: linear-gradient(135deg, #00d4ff22, #00d4ff44);
+    border: 1px solid #00d4ff66;
+    color: #00d4ff;
+  }
+  .btn-primary:hover {
+    background: linear-gradient(135deg, #00d4ff33, #00d4ff55);
+    box-shadow: 0 0 15px #00d4ff33;
+    transform: translateY(-1px);
+  }
+  .btn-primary:active {
+    transform: translateY(0);
+  }
+
+  /* Danger button */
+  .btn-danger {
+    @apply px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200;
+    background: linear-gradient(135deg, #ff444422, #ff444444);
+    border: 1px solid #ff444466;
+    color: #ff4444;
+  }
+  .btn-danger:hover {
+    background: linear-gradient(135deg, #ff444433, #ff444455);
+    box-shadow: 0 0 15px #ff444433;
+  }
+
+  /* Input field */
+  .input-field {
+    @apply w-full px-3 py-2 rounded-lg text-sm outline-none transition-all duration-200;
+    background: #0a0e1a;
+    border: 1px solid #1e2d45;
+    color: #e2e8f0;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .input-field:focus {
+    border-color: #00d4ff66;
+    box-shadow: 0 0 0 2px #00d4ff22;
+  }
+  .input-field::placeholder {
+    color: #475569;
+  }
+
+  /* Status dot */
+  .status-dot {
+    @apply w-2.5 h-2.5 rounded-full inline-block;
+  }
+  .status-dot.online {
+    background: #00ff88;
+    box-shadow: 0 0 8px #00ff88;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  .status-dot.offline {
+    background: #ff4444;
+    box-shadow: 0 0 8px #ff444488;
+  }
+
+  /* Terminal output */
+  .terminal {
+    @apply rounded-lg p-4 font-mono text-sm overflow-auto;
+    background: #000000;
+    border: 1px solid #1e2d45;
+    color: #00ff88;
+    min-height: 120px;
+    max-height: 400px;
+  }
+
+  /* Grid background overlay */
+  .grid-bg {
+    background-image: linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  /* Section heading */
+  .section-title {
+    @apply text-lg font-heading font-semibold tracking-wide;
+    color: #00d4ff;
+    font-family: 'Rajdhani', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+}
+
+/* ─── Animations ────────────────────────────────────────────────────────────── */
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 5px #00ff8888; }
+  50% { box-shadow: 0 0 15px #00ff88cc, 0 0 30px #00ff8844; }
+}
+
+@keyframes scan-line {
+  0% { top: -5%; }
+  100% { top: 105%; }
+}
+
+/* Loading skeleton */
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    #111827 25%,
+    #1a2236 50%,
+    #111827 75%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 1.5s infinite linear;
+  border-radius: 6px;
+}
+
+/* Fade in animation for page transitions */
+.page-enter {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
